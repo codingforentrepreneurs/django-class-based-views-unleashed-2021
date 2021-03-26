@@ -10,6 +10,13 @@ class ProductListView(ListView):
     # template_name = <app_name>/<model>_<view_name>.html
     model = Product
     # template_name = 'myproducts.html'
+    def get_context_data(self, *args,**kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        print(context)
+        qs = context['object_list']
+        # context['object_list'] = Product.objects.none()
+        context['title'] = "My Title"
+        return context
 
 
 class ProductDetailView(DetailView):
