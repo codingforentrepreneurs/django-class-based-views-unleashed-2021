@@ -1,7 +1,6 @@
-[![Django CBV Unleashed Logo](https://static.codingforentrepreneurs.com/media/projects/django-class-based-views-unleashed/images/share/Django_Class_Based_Views_Unleashed_shar.jpg)
-)](https://www.codingforentrepreneurs.com/projects/django-class-based-views-unleashed)
+[![Django CBV Unleashed Logo](https://static.codingforentrepreneurs.com/media/projects/django-class-based-views-unleashed/images/share/Django_Class_Based_Views_Unleashed_shar.jpg)](https://www.codingforentrepreneurs.com/projects/django-class-based-views-unleashed)
 
-# [Django Class Based Views Unleahsed] (https://www.codingforentrepreneurs.com/projects/django-class-based-views-unleashed)
+# [Django Class Based Views Unleahsed](https://www.codingforentrepreneurs.com/projects/django-class-based-views-unleashed)
 
 Django Class Based Views (*CBVs*) are an important part of using Django effectively.  *CBVs* help us eliminate redundant code across our entire application and stay DRY while using CRUD and CRUD-like views. 
 
