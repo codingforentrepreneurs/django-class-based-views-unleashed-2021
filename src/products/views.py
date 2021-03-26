@@ -1,19 +1,16 @@
-from django.views.generic import View, TemplateView
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.views.generic import ListView, DetailView
+
+from .models import Product
 
 
-def about_us_redirect_view(request):
-    return HttpResponseRedirect("/about/")
+class ProductListView(ListView):
+    # app_name = products
+    # model = product
+    # view_name = list
+    # template_name = <app_name>/<model>_<view_name>.html
+    model = Product
+    # template_name = 'myproducts.html'
 
-def about_us_redirect_view(request):
-    return HttpResponseRedirect("/about/")
 
-def about_us_redirect_view(request):
-    return HttpResponseRedirect("/about/")
-
-def about_us_view(request):
-    return render(request, "about.html", {})
-
-class AboutUsView(TemplateView):
-    template_name = 'about.html'
+class ProductDetailView(DetailView):
+    model = Product
