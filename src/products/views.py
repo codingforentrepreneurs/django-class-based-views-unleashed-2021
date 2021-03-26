@@ -6,6 +6,12 @@ from django.shortcuts import render
 def about_us_redirect_view(request):
     return HttpResponseRedirect("/about/")
 
+def about_us_redirect_view(request):
+    return HttpResponseRedirect("/about/")
+
+def about_us_redirect_view(request):
+    return HttpResponseRedirect("/about/")
+
 def about_us_view(request):
     return render(request, "about.html", {})
 
