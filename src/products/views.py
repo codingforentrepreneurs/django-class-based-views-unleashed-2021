@@ -1,6 +1,15 @@
 from django.views.generic import ListView, DetailView
 
-from .models import Product
+from .models import Product, DigitalProduct
+
+class DigitalProductListView(ListView):
+    template_name = 'products/product_list.html'
+    model = DigitalProduct
+
+    def get_context_data(self, *args,**kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['title'] = "Digital Downloads"
+        return context
 
 
 class ProductListView(ListView):
@@ -15,7 +24,7 @@ class ProductListView(ListView):
         print(context)
         qs = context['object_list']
         # context['object_list'] = Product.objects.none()
-        context['title'] = "My Title"
+        context['title'] = "Products"
         return context
 
 
