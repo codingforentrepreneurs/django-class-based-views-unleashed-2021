@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView, View
 from django.views.generic.list import MultipleObjectMixin
 from django.shortcuts import render
+from django.http import Http404
 
 from .mixins import TemplateTitleMixin
 from .models import Product, DigitalProduct
@@ -31,5 +32,41 @@ class ProductListView(TemplateTitleMixin, ListView):
     title = 'Products'
 
 
+
+class ProductMixinDetailView(MultipleObjectMixin, View):
+    queryset = Product.objects.all() # .filter(pk__gte=2)
+
+    # def get_queryset(self):
+    #     return Product.objects.filter(user=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        print(self.kwargs)
+        pk = kwargs.get('pk')
+        self.object_list = self.get_queryset().filter(pk=pk)
+        qs = self.object_list
+        if not qs.exists():
+            raise Http404('this was not found')
+        obj = qs.get()
+        context = self.get_context_data()
+        context['object'] = obj
+        print(context)
+        app_label = self.object_list.model._meta.app_label
+        model_name = self.object_list.model._meta.model_name
+        template = f"{app_label}/{model_name}_detail.html"
+        return render(request, template, context)
+
 class ProductDetailView(DetailView):
     model = Product
+
+    # def get_object(self):
+    #     url_kwarg_id = self.kwargs.get("id")
+    #     qs = self.get_queryset().filter(id=url_kwarg_id)
+    #     if not qs.exists():
+    #         raise Http404('Product not found')
+    #     return qs.get()
+
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super().get_context_data(*args, **kwargs)
+    #     print(context)
+    #     print(self.kwargs)
+    #     return context
