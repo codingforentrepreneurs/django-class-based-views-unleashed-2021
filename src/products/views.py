@@ -1,7 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, RedirectView, View
 from django.views.generic.list import MultipleObjectMixin
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
+from django.utils.decorators import method_decorator
 
 from .mixins import TemplateTitleMixin
 from .models import Product, DigitalProduct
@@ -71,9 +74,22 @@ class ProductMixinDetailView(MultipleObjectMixin, View):
         template = f"{app_label}/{model_name}_detail.html"
         return render(request, template, context)
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
 
+
+# class MyLoginRequiredMixin():
+#     @method_decorator(login_required)
+#     @method_decorator(cache_page)
+#     @method_decorator(permission_required)
+#     def dispatch(self, *args, **kwargs):
+#         return super().dispatch( *args, **kwargs)
+
+
+class MyProductDetailView(LoginRequiredMixin, DetailView):
+    model = Product
+
+    
     # def get_object(self):
     #     url_kwarg_id = self.kwargs.get("id")
     #     qs = self.get_queryset().filter(id=url_kwarg_id)

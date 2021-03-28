@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView, RedirectView
-from products.views import ProductListView, ProductDetailView, DigitalProductListView, ProductRedirectView, ProductIDRedirectView
+from products.views import ProductListView, ProductDetailView, DigitalProductListView, ProductRedirectView, ProductIDRedirectView, MyProductDetailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +27,5 @@ urlpatterns = [
     path('b/<slug:slug>/', ProductRedirectView.as_view()),
     path('p/<int:pk>/', ProductIDRedirectView.as_view()),
     path('products/<slug:slug>/', ProductDetailView.as_view()),
+    path('my-products/<slug:slug>/', MyProductDetailView.as_view()),
 ]
