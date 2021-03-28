@@ -1,11 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, DetailView, RedirectView, View
+from django.views.generic import (
+        CreateView, 
+        ListView, 
+        DetailView, 
+        RedirectView, 
+        View
+)
 from django.views.generic.list import MultipleObjectMixin
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from django.utils.decorators import method_decorator
 
+from .forms import ProductModelForm
 from .mixins import TemplateTitleMixin
 from .models import Product, DigitalProduct
 
@@ -89,16 +96,19 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
 class MyProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
 
-    
-    # def get_object(self):
-    #     url_kwarg_id = self.kwargs.get("id")
-    #     qs = self.get_queryset().filter(id=url_kwarg_id)
-    #     if not qs.exists():
-    #         raise Http404('Product not found')
-    #     return qs.get()
 
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super().get_context_data(*args, **kwargs)
-    #     print(context)
-    #     print(self.kwargs)
-    #     return context
+
+class MyProductCreateView(LoginRequiredMixin, CreateView):
+    form_class = ProductModelForm
+    template_name = 'forms.html'
+    # success_url = '/products'
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.user = self.request.user
+        obj.save()
+        # print(form.cleaned_data)
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return super().form_invalid(form)

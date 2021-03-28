@@ -14,6 +14,9 @@ class Product(models.Model):
     title = models.CharField(max_length=120)
     slug = models.SlugField(unique=True)
 
+    def get_absolute_url(self):
+        return f"/products/{self.slug}/"
+
 
 # DjangoFlix - Learn Proxy Model
 # cfe.sh/projects/djangoflix
