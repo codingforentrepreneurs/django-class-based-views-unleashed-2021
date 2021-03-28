@@ -7,6 +7,7 @@ from django.views.generic import (
         RedirectView, 
         View
 )
+from django.views.generic.edit import FormMixin, ModelFormMixin
 from django.views.generic.list import MultipleObjectMixin
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
@@ -108,6 +109,30 @@ class MyProductCreateView(LoginRequiredMixin, CreateView):
         obj.user = self.request.user
         obj.save()
         # print(form.cleaned_data)
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+
+
+class MyProductBaseFormView(LoginRequiredMixin, FormMixin, View):
+    form_class = ProductModelForm
+    template_name = 'forms.html'
+    # success_url = '/products'
+    
+    def get(self, request, *args, **kwargs):
+        form = self.get_form()
+        return render(request, self.template_name, {"form": form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+        
+    def form_valid(self, form):
+        form.instance.user = self.request.user
         return super().form_valid(form)
 
     def form_invalid(self, form):
