@@ -16,12 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView, RedirectView
-from products.views import ProductListView, ProductDetailView, DigitalProductListView
+from products.views import ProductListView, ProductDetailView, DigitalProductListView, ProductRedirectView, ProductIDRedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('digital/', DigitalProductListView.as_view()),
     path('products/', ProductListView.as_view()),
     # path('products/<int:id>/', ProductDetailView.as_view()),
+    path('a/<slug:slug>/', ProductRedirectView.as_view()),
+    path('b/<slug:slug>/', ProductRedirectView.as_view()),
+    path('p/<int:pk>/', ProductIDRedirectView.as_view()),
     path('products/<slug:slug>/', ProductDetailView.as_view()),
 ]

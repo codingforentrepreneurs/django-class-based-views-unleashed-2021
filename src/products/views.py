@@ -1,10 +1,26 @@
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView, RedirectView, View
 from django.views.generic.list import MultipleObjectMixin
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 
 from .mixins import TemplateTitleMixin
 from .models import Product, DigitalProduct
+
+
+class ProductIDRedirectView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        url_params = self.kwargs
+        pk = url_params.get("pk")
+        obj = get_object_or_404(Product, pk=pk)
+        # obj.get_absolute_url()
+        return f'/products/{obj.slug}/'
+
+
+class ProductRedirectView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        url_params = self.kwargs
+        print(self.request.path, self.request.build_absolute_uri())
+        return f'/products/{url_params.get("slug")}/'
 
 
 class DigitalProductListView(TemplateTitleMixin, ListView):
