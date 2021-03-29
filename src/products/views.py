@@ -105,14 +105,8 @@ class MyProductCreateView(LoginRequiredMixin, CreateView):
     # success_url = '/products'
 
     def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.user = self.request.user
-        obj.save()
-        # print(form.cleaned_data)
+        form.instance.user = self.request.user
         return super().form_valid(form)
-
-    def form_invalid(self, form):
-        return super().form_invalid(form)
 
 
 def product_update_view(request, slug, *args, **kwargs):
