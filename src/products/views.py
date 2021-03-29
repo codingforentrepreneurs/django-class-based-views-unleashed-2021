@@ -115,10 +115,24 @@ class MyProductCreateView(LoginRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
+def product_update_view(request, slug, *args, **kwargs):
+    obj = Product.objects.get(slug=slug)
+    form = ProductModelForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+    context = {
+        "object": obj,
+        "form": form,
+    }
+    return render(request, "forms.html", context)
+
 class MyProductBaseFormView(LoginRequiredMixin, ModelFormMixin, View):
     form_class = ProductModelForm
     template_name = 'forms.html'
     # success_url = '/products'
+
+    def get_form_kwargs(self):
+        return {"instance": Product.objects.first()}
     
     def get(self, request, *args, **kwargs):
         form = self.get_form()
