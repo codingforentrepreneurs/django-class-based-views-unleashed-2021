@@ -2,4 +2,7 @@
     {% csrf_token %}
     {{ form.as_p }}
     <input type='submit' value='Save' />
+    {% if delete_url %}
+    <a href="{{ delete_url }}">Delete this?</a>
+    {% endif %}
 </form>

@@ -4,7 +4,9 @@ from django.views.generic import (
         CreateView, 
         ListView, 
         DetailView, 
+        DeleteView,
         RedirectView, 
+        UpdateView,
         View
 )
 from django.views.generic.edit import FormMixin, ModelFormMixin
@@ -95,7 +97,8 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
 
 
 class MyProductDetailView(LoginRequiredMixin, DetailView):
-    model = Product
+      def get_queryset(self):
+        return Product.objects.filter(user=self.request.user)
 
 
 
@@ -107,6 +110,29 @@ class MyProductCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class MyProductUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = ProductModelForm
+    template_name_suffix = '_detail'
+
+    def get_queryset(self):
+        return Product.objects.filter(user=self.request.user)
+
+    def get_success_url(self):
+        return self.object.get_edit_url()
+
+
+class MyProductDeleteView(LoginRequiredMixin, DeleteView):
+    template_name = 'forms-delete.html'
+
+    def get_queryset(self):
+        return Product.objects.filter(user=self.request.user)
+
+    def get_success_url(self):
+        return "/products/"
+
+
 
 
 def product_update_view(request, slug, *args, **kwargs):
