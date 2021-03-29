@@ -115,7 +115,7 @@ class MyProductCreateView(LoginRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-class MyProductBaseFormView(LoginRequiredMixin, FormMixin, View):
+class MyProductBaseFormView(LoginRequiredMixin, ModelFormMixin, View):
     form_class = ProductModelForm
     template_name = 'forms.html'
     # success_url = '/products'
